@@ -1,33 +1,60 @@
-var Joi = require('joi')
-var commonValidators = require('../common')
-
-var stringNonTrivialTrimmed = commonValidators.stringNonTrivialTrimmed
-var stringAllowEmptyTrimmed = commonValidators.stringAllowEmptyTrimmed
-var id = commonValidators.id
+var common = require('../common')
 
 
-const specsSchema = Joi.array().items(Joi.object().keys({
-  id: id.optional(),
-  name: Joi.string(),
-  value: Joi.string().required(),
-}).xor('id', 'name')) // Must contain exactly one of id, name
+var specsSchema = {
+  type: 'array',
+  items: {
+    // set up an effective "xor" between the id and name properties
+    oneOf: [
+      {
+        type: 'object',
+        properties: {
+          id: common.id,
+          value: common.string, // required
+        },
+        required: ['id', 'value'],
+        additionalProperties: false,
+      },
+      {
+        type: 'object',
+        properties: {
+          name: common.string,
+          value: common.string, // required
+        },
+        required: ['name', 'value'],
+        additionalProperties: false,
+      },
+    ],
+  },
+}
 
-module.exports = {
-  name: stringNonTrivialTrimmed.required(),
-  manu_id: stringAllowEmptyTrimmed.required(),
-  manu_description: stringAllowEmptyTrimmed.required(),
-  our_note: stringAllowEmptyTrimmed.required(),
-  date_released: Joi.date().iso().allow(null).required(),
+var properties = {
+  name: common.stringNonTrivial,
+  menu_id: common.string,
+  menu_description: common.string,
+  our_note: common.string,
+  date_released: common.stringIsoDate,
 
   // belongsTo relations
-  ptype_id: id.required(),
-  brand_id: id.required(),
+  ptype_id: common.id,
+  brand_id: common.id,
 
   // Complex relations
-  specs: specsSchema.required(),
+  specs: specsSchema,
+  pvariations: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        id: common.id, // not required
+        specs: specsSchema
+      },
+      required: ['specs'],
+      additionalProperties: false,
+    },
+  },
+}
 
-  pvariations: Joi.array().items(Joi.object({
-    id: id.optional(), // No id means new, otherwise, it's an update
-    specs: specsSchema.required(),
-  })).required(),
+module.exports = {
+  standard: common.makeValidator(properties, true)
 }

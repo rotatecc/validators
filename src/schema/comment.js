@@ -1,6 +1,10 @@
-var modStatus = require('../common').modStatus
+var common = require('../common')
 
+
+var properties = {
+  modstatus: common.modStatus,
+}
 
 module.exports = {
-  modstatus: modStatus.required(),
+  moderate: common.makeValidator(properties, ['modstatus'])
 }

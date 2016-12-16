@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/rotatecc/validators#readme",
   "dependencies": {
-    "joi": "^10.0.6"
+    "ajv": "^4.10.0"
   }
 }

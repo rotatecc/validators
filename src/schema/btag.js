@@ -1,6 +1,10 @@
-var stringNonTrivialTrimmed = require('../common').stringNonTrivialTrimmed
+var common = require('../common')
 
+
+var properties = {
+  name: common.stringNonTrivial,
+}
 
 module.exports = {
-  name: stringNonTrivialTrimmed.required(),
+  standard: common.makeValidator(properties, true)
 }

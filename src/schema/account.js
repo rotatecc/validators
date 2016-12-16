@@ -1,14 +1,18 @@
-var Joi = require('joi')
-var stringNonTrivialTrimmed = require('../common').stringNonTrivialTrimmed
+var common = require('../common')
 
+
+var properties = {
+  email: common.stringEmail,
+  display: common.stringNonTrivial,
+  password: common.stringPassword,
+  // password_confirmation must be equal to password
+  password_confirmation: { constant: { '$data': '1/password' } },
+  password_login: common.string,
+}
 
 module.exports = {
-  email: Joi.string().email().required(),
-  display: stringNonTrivialTrimmed.required(),
-  password: Joi.string().min(7).required(),
-
-  // Non-columns:
-  password_confirmation: Joi.any().strip().valid(Joi.ref('password')).required()
-    .options({ language: { any: { allowOnly: 'Passwords must match' } } }),
-  password_login: Joi.string().required(),
+  register: common.makeValidator(properties, ['email', 'display', 'password', 'password_confirmation']),
+  login: common.makeValidator(properties, ['email', 'password_login']),
+  updateProfile: common.makeValidator(properties, ['email', 'display']),
+  updatePassword: common.makeValidator(properties, ['password', 'password_confirmation']),
 }

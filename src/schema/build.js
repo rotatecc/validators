@@ -1,10 +1,4 @@
-var Joi = require('joi')
-var commonValidators = require('../common')
-
-var stringNonTrivialTrimmed = commonValidators.stringNonTrivialTrimmed
-var stringAllowEmptyTrimmed = commonValidators.stringAllowEmptyTrimmed
-var id = commonValidators.id
-
+var common = require('../common')
 
 /**
  * Standard POST/PUT body for Build:
@@ -25,20 +19,32 @@ var id = commonValidators.id
  * }
  */
 
+var properties = {
+  name: common.stringNonTrivial,
+  description: common.string,
+  btags: {
+    type: 'array',
+    items: common.id,
+  },
+  bvariations: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        id: common.id, // not required
+        name: common.stringNonTrivial,
+        bvariationtype_id: common.id,
+        pvariations: {
+          type: 'array',
+          items: common.id
+        }
+      },
+      required: ['name', 'bvariationtype_id', 'pvariations']
+      additionalProperties: false,
+    },
+  },
+}
 
-module.exports = {
-  name: stringNonTrivialTrimmed.required(),
-  description: stringAllowEmptyTrimmed.required(),
-
-  // belongsTo relations
-  account_id: id.required(),
-
-  // Complex relations
-  btags: Joi.array().items(id.optional()).required(),
-  bvariations: Joi.array().items(Joi.object().keys({
-    id: id.optional(),
-    name: stringNonTrivialTrimmed.required(),
-    bvariationtype_id: id.required(),
-    pvariations: Joi.array().items(id.optional()).required(),
-  }).optional()).required(),
+export default {
+  standard: common.makeValidator(properties, true)
 }
