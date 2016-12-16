@@ -26,26 +26,38 @@ module.exports = {
   // an array of required properties to be used as-is,
   // or a boolean (false = require none, true = require all)
   makeValidator: function (properties, required = true) {
-    var requiredFinal = (() => {
+    var propertiesAndRequiredFinal = (function() {
       if (required === true) {
         // Require all properties
         var propertyKeys = [], i = 0
         for (propertyKeys[i++] in properties) {}
-        return propertyKeys
+        return [properties, propertyKeys]
       } else if (required === false) {
         // Require no properties
-        return []
+        return [properties, []]
       }
 
       // Assume array
-      return required
+
+      // Pick required properties from array
+      var propertiesPicked = required.reduce(function (accum, pk) {
+        if (!properties[pk]) {
+          throw 'Required property not in properties'
+        }
+
+        accum[pk] = properties[pk]
+
+        return accum
+      }, {})
+
+      return [propertiesPicked, required]
     })()
 
     return ajv.compile({
       '$schema': 'http://json-schema.org/draft-04/schema#',
       type: 'object',
-      properties: properties,
-      required: requiredFinal,
+      properties: propertiesAndRequiredFinal[0],
+      required: propertiesAndRequiredFinal[1],
       additionalProperties: false,
     })
   },
