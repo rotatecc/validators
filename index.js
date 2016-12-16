@@ -1,5 +1,5 @@
-var common = require('./common')
-var schema = require('./schema')
+var common = require('./src/common')
+var schema = require('./src/schema')
 
 
 module.exports = {
