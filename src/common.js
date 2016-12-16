@@ -13,9 +13,9 @@ module.exports = {
 
   stringIsoDate: { type: 'string', format: 'date' },
 
-  stringNonTrivial: { type: 'string', minimum: 2 },
+  stringNonTrivial: { type: 'string', minLength: 2 },
 
-  stringPassword: { type: 'string', minimum: 7 },
+  stringPassword: { type: 'string', minLength: 7 },
 
   modStatus: { type: 'string', enum: ['non', 'approve', 'reject'] },
 
