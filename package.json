@@ -1,0 +1,22 @@
+{
+  "name": "validators",
+  "version": "0.1.0",
+  "description": "validators to be shared",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rotatecc/validators.git"
+  },
+  "author": "Andrew Suzuki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rotatecc/validators/issues"
+  },
+  "homepage": "https://github.com/rotatecc/validators#readme",
+  "dependencies": {
+    "joi": "^10.0.6"
+  }
+}
