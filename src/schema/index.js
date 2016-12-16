@@ -1,18 +1,14 @@
-var schemas = [
-  'account',
-  'brand',
-  'btag',
-  'build',
-  'comment',
-  'part',
-  'photo',
-  'ptype',
-  'review',
-  'spec',
-]
+// Re-exports
 
-module.exports = schemas.reduce(function (accum, schemaName) {
-  // Not immutable, but...whatever
-  accum[schemaName] = require('./' + schemaName)
-  return accum
-}, {})
+module.exports = {
+  account: require('./account'),
+  brand: require('./brand'),
+  btag: require('./btag'),
+  build: require('./build'),
+  comment: require('./comment'),
+  part: require('./part'),
+  photo: require('./photo'),
+  ptype: require('./ptype'),
+  review: require('./review'),
+  spec: require('./spec'),
+}

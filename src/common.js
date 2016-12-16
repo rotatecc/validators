@@ -10,7 +10,7 @@ module.exports = {
   string: { type: 'string' },
 
   stringEmail: { type: 'string', format: 'email' },
-  
+
   stringIsoDate: { type: 'string', format: 'date' },
 
   stringNonTrivial: { type: 'string', minimum: 2 },
@@ -29,8 +29,8 @@ module.exports = {
     var requiredFinal = (() => {
       if (required === true) {
         // Require all properties
-        var propertyKeys = [], i = 0;
-        for (propertyKeys[i++] in foo) {}
+        var propertyKeys = [], i = 0
+        for (propertyKeys[i++] in properties) {}
         return propertyKeys
       } else if (required === false) {
         // Require no properties
@@ -48,6 +48,5 @@ module.exports = {
       required: requiredFinal,
       additionalProperties: false,
     })
-  }
-
+  },
 }

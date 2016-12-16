@@ -36,15 +36,15 @@ var properties = {
         bvariationtype_id: common.id,
         pvariations: {
           type: 'array',
-          items: common.id
+          items: common.id,
         }
       },
-      required: ['name', 'bvariationtype_id', 'pvariations']
+      required: ['name', 'bvariationtype_id', 'pvariations'],
       additionalProperties: false,
     },
   },
 }
 
-export default {
+module.exports = {
   standard: common.makeValidator(properties, true)
 }
